@@ -14,17 +14,26 @@ open class Employee (
     open var enabled: Boolean = true,
     open var pin: String = "",
     open var pinActive: Boolean = true
+
 ) : RealmObject() {
 
-    constructor(employee: EmployeeDO) : this() {
-        this.employeeId = employee.employeeId
-        this.dateCreated = Date()//employee.dateCreated
-        this.firstName = employee.firstName
-        this.lastName = employee.lastName
-        this.facilityName = employee.facilityName
-        this.enabled = employee.enabled
-        this.pin = employee.pin
-        this.pinActive = employee.pinActive
+    constructor(employee: EmployeeDO) : this(
+        employee.employeeId,
+        Date(), //employee.dateCreated,
+        employee.firstName,
+        employee.lastName,
+        employee.facilityName,
+        employee.enabled,
+        employee.pin,
+        employee.pinActive) {
+//        this.employeeId = employee.employeeId
+//        this.dateCreated = Date()//employee.dateCreated
+//        this.firstName = employee.firstName
+//        this.lastName = employee.lastName
+//        this.facilityName = employee.facilityName
+//        this.enabled = employee.enabled
+//        this.pin = employee.pin
+//        this.pinActive = employee.pinActive
     }
 
 }

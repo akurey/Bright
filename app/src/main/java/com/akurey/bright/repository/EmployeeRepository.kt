@@ -23,7 +23,6 @@ class EmployeeRepository: EmployeeDataSource {
         val realm = Realm.getDefaultInstance()
         val employee = Employee(awsEmployee)
         realm.beginTransaction()
-
         try {
             realm.copyToRealmOrUpdate(employee)
             realm.commitTransaction()
