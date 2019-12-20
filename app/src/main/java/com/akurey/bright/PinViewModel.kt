@@ -21,6 +21,8 @@ class PinViewModel : ViewModel() {
         get() = _thirdDigit
     val fourthDigit: LiveData<String>
         get() = _fourthDigit
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
 
     init {
         _isDataReady.value = false
@@ -28,6 +30,7 @@ class PinViewModel : ViewModel() {
         _secondDigit.value = ""
         _thirdDigit.value = ""
         _fourthDigit.value = ""
+        _isLoading.value = false
     }
 
     fun initData() {
@@ -36,6 +39,7 @@ class PinViewModel : ViewModel() {
         _secondDigit.value = ""
         _thirdDigit.value = ""
         _fourthDigit.value = ""
+        _isLoading.value = false
     }
 
     fun setFirstDigit(value: String) {
@@ -56,6 +60,10 @@ class PinViewModel : ViewModel() {
     fun setFourthDigit(value: String) {
         _fourthDigit.value = value
         validateDigits()
+    }
+
+    fun setIsLoading(value: Boolean) {
+        _isLoading.value = value
     }
 
     private fun validateDigits() {

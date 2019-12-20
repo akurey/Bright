@@ -3,13 +3,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="viewmodel"
             type="com.akurey.bright.PinViewModel" />
-
         <variable
             name="fragment"
             type="com.akurey.bright.PinFragment" />
@@ -22,7 +19,9 @@
         android:background="@color/colorWhite"
         android:clickable="true"
         android:focusable="true">
+
         <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -30,7 +29,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">​
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.19">​
+
             <EditText
                 android:id="@+id/editTextFirstDigit"
                 style="@style/CustomEditText"
@@ -44,7 +45,8 @@
                 android:maxLength="1"
                 android:onTextChanged="@{fragment::onFirstDigitChange}"
                 android:text="@{viewmodel.firstDigit}"
-                app:backgroundTint="@color/colorAccent" />
+                app:backgroundTint="@color/colorAkureyOrange" />
+
             <EditText
                 android:id="@+id/editTextSecondDigit"
                 style="@style/CustomEditText"
@@ -59,7 +61,8 @@
                 android:onTextChanged="@{fragment::onSecondDigitChange}"
                 android:text="@{viewmodel.secondDigit}"
                 android:textColor="@color/colorBlack"
-                app:backgroundTint="@color/colorAccent" />
+                app:backgroundTint="@color/colorAkureyOrange" />
+
             <EditText
                 android:id="@+id/editTextThirdDigit"
                 style="@style/CustomEditText"
@@ -74,7 +77,8 @@
                 android:onTextChanged="@{fragment::onThirdDigitChange}"
                 android:text="@{viewmodel.thirdDigit}"
                 android:textColor="@color/colorBlack"
-                app:backgroundTint="@color/colorAccent" />
+                app:backgroundTint="@color/colorAkureyOrange" />
+
             <EditText
                 android:id="@+id/editTextFourthDigit"
                 style="@style/CustomEditText"
@@ -89,33 +93,36 @@
                 android:onTextChanged="@{fragment::onFourthDigitChange}"
                 android:text="@{viewmodel.fourthDigit}"
                 android:textColor="@color/colorBlack"
-                app:backgroundTint="@color/colorAccent" />
+                app:backgroundTint="@color/colorAkureyOrange" />
         </LinearLayout>
+
         <Button
             android:id="@+id/nextButton"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="28dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/colorAccent"
+            android:background="@color/colorAkureyOrange"
             android:enabled="@{viewmodel.isDataReady}"
             android:onClick="@{fragment::onNextClicked}"
-            android:text="STRING_RESOURCE"
+            android:text="@string/login"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewmodel.isLoading ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-<!--        <ProgressBar-->
-<!--            android:id="@+id/progressBar"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:visibility="@{viewmodel.isLoading ? View.VISIBLE : View.INVISIBLE}"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

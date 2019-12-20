@@ -2,11 +2,6 @@ package com.akurey.bright
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.akurey.bright.AWSModel.EmployeeDO
 import com.akurey.bright.AWSModel.TimeLogDO
@@ -42,13 +37,6 @@ class MainActivity : AppCompatActivity() {
         transaction.add(R.id.container, fragment)
         transaction.addToBackStack(fragment::class.java.name)
         transaction.commit()
-        // get reference to button
-//        val btn_click_me = findViewById(R.id.add_button) as Button
-//        btn_click_me.setOnClickListener {
-//            getEmployee("1234") {
-//                Toast.makeText(this, it?.firstName, Toast.LENGTH_LONG).show()
-//            }
-//        }
     }
 
     private fun initRealm() {
@@ -88,7 +76,6 @@ class MainActivity : AppCompatActivity() {
             logItem.lastName = employee.lastName
             logItem.facility = employee.facilityName
             logItem.employeeId = employee.employeeId
-//            private String _dateTime;
 //            private Double _hours;
 
             thread(start = true) {
@@ -97,24 +84,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun createEmployee() {
-        val employee = EmployeeDO()
-        employee.employeeId = UUID.randomUUID().toString()
-        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-        employee.dateCreated = sdf.format(Date())
-        employee.firstName = "Esteban"
-        employee.lastName = "Brenes"
-        employee.facilityName = "Akurey"
-        employee.enabled = true
-        employee.pinActive = true
-        employee.pin = "1234"
-
-        thread(start = true) {
-            dynamoDBMapper?.save(employee)
-        }
-        EmployeeRepository.getInstance().saveEmployee(employee)
+    fun goToTimeLog(){
+        val transaction = supportFragmentManager.beginTransaction()
+        val fragment = TimeLogFragment.newInstance()
+        transaction.replace(R.id.container, fragment)
+        transaction.commit()
     }
-
 
     fun getEmployee(pin: String, callback: (EmployeeDO?) -> Unit) {
         thread(start = true) {
@@ -126,7 +101,27 @@ class MainActivity : AppCompatActivity() {
                 .withFilterExpression("pin = :pin and pinActive = :pinActive and enabled = :enabled")
                 .withExpressionAttributeValues(expressionAttributeValues)
             val result = dynamoDBMapper?.scan(EmployeeDO::class.java, queryExpression)
-            runOnUiThread { callback(result?.first()) }
+            runOnUiThread { callback(result?.firstOrNull()) }
         }
     }
 }
+
+
+
+//    private fun createEmployee() {
+//        val employee = EmployeeDO()
+//        employee.employeeId = UUID.randomUUID().toString()
+//        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+//        employee.dateCreated = sdf.format(Date())
+//        employee.firstName = "Esteban"
+//        employee.lastName = "Brenes"
+//        employee.facilityName = "Akurey"
+//        employee.enabled = true
+//        employee.pinActive = true
+//        employee.pin = "1234"
+//
+//        thread(start = true) {
+//            dynamoDBMapper?.save(employee)
+//        }
+//        EmployeeRepository.getInstance().saveEmployee(employee)
+//    }

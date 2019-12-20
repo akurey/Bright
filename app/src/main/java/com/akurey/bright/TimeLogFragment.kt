@@ -12,6 +12,16 @@ import android.view.ViewGroup
  */
 class TimeLogFragment : Fragment() {
 
+    // region New Instance Method
+    companion object {
+        fun newInstance(): TimeLogFragment {
+            val arguments = Bundle()
+            val fragment = TimeLogFragment()
+            fragment.arguments = arguments
+            return fragment
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
