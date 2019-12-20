@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getEmployee(pin: String, callback: (EmployeeDO?) -> Unit) {
+    fun getEmployee(pin: String, callback: (EmployeeDO?) -> Unit) {
         thread(start = true) {
             val expressionAttributeValues: MutableMap<String, AttributeValue> = HashMap()
             expressionAttributeValues[":pin"] = AttributeValue().withS(pin)

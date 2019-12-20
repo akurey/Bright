@@ -1,30 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".PinFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
 
-    <Button
-        android:id="@+id/add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="Send Log"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        <import type="android.view.View" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <variable
+            name="viewmodel"
+            type="com.akurey.bright.PinViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.akurey.bright.PinFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:clickable="true"
+        android:focusable="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">​
+            <EditText
+                android:id="@+id/editTextFirstDigit"
+                style="@style/CustomEditText"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:lineSpacingExtra="0sp"
+                android:maxLength="1"
+                android:onTextChanged="@{fragment::onFirstDigitChange}"
+                android:text="@{viewmodel.firstDigit}"
+                app:backgroundTint="@color/colorAccent" />
+            <EditText
+                android:id="@+id/editTextSecondDigit"
+                style="@style/CustomEditText"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:lineSpacingExtra="0sp"
+                android:maxLength="1"
+                android:onTextChanged="@{fragment::onSecondDigitChange}"
+                android:text="@{viewmodel.secondDigit}"
+                android:textColor="@color/colorBlack"
+                app:backgroundTint="@color/colorAccent" />
+            <EditText
+                android:id="@+id/editTextThirdDigit"
+                style="@style/CustomEditText"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:lineSpacingExtra="0sp"
+                android:maxLength="1"
+                android:onTextChanged="@{fragment::onThirdDigitChange}"
+                android:text="@{viewmodel.thirdDigit}"
+                android:textColor="@color/colorBlack"
+                app:backgroundTint="@color/colorAccent" />
+            <EditText
+                android:id="@+id/editTextFourthDigit"
+                style="@style/CustomEditText"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:lineSpacingExtra="0sp"
+                android:maxLength="1"
+                android:onTextChanged="@{fragment::onFourthDigitChange}"
+                android:text="@{viewmodel.fourthDigit}"
+                android:textColor="@color/colorBlack"
+                app:backgroundTint="@color/colorAccent" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorAccent"
+            android:enabled="@{viewmodel.isDataReady}"
+            android:onClick="@{fragment::onNextClicked}"
+            android:text="STRING_RESOURCE"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progressBar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="@{viewmodel.isLoading ? View.VISIBLE : View.INVISIBLE}"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

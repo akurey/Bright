@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="CustomEditText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingBottom">20dp</item>
+        <item name="android:ems">10</item>
+    </style>
+
 </resources>
