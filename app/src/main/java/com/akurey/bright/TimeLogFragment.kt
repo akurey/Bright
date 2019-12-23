@@ -1,4 +1,3 @@
-
 package com.akurey.bright
 
 import android.os.Bundle
@@ -12,18 +11,21 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.akurey.bright.AWSModel.EmployeeDO
 import com.akurey.bright.data.Employee
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.SimpleDateFormat
 import java.util.*
 
 class TimeLogFragment : Fragment() {
-
+    lateinit var parent: MainActivity
+    lateinit var employee: Employee
     private lateinit var binding: FragmentTimeLogBinding
     private var startDateTime = Calendar.getInstance()
     private var endDateTime = Calendar.getInstance()
-    lateinit var employee: Employee
+
 
     // region New Instance Method
     companion object {
@@ -47,11 +49,43 @@ class TimeLogFragment : Fragment() {
         endDateTime.set(Calendar.HOUR_OF_DAY, 17)
         endDateTime.set(Calendar.MINUTE, 0)
 
-        binding.startDate.setOnClickListener { this.showDatePickerDialog(it as TextView, startDateTime) }
-        binding.startTime.setOnClickListener { this.showTimePickerDialog(it as TextView, startDateTime) }
+        binding.startDate.setOnClickListener {
+            this.showDatePickerDialog(
+                it as TextView,
+                startDateTime
+            )
+        }
+        binding.startTime.setOnClickListener {
+            this.showTimePickerDialog(
+                it as TextView,
+                startDateTime
+            )
+        }
 
-        binding.endDate.setOnClickListener { this.showDatePickerDialog(it as TextView, endDateTime) }
-        binding.endTime.setOnClickListener { this.showTimePickerDialog(it as TextView, endDateTime) }
+        binding.endDate.setOnClickListener {
+            this.showDatePickerDialog(
+                it as TextView,
+                endDateTime
+            )
+        }
+        binding.endTime.setOnClickListener {
+            this.showTimePickerDialog(
+                it as TextView,
+                endDateTime
+            )
+        }
+
+        binding.sendButton.setOnClickListener {
+            parent.createLog(employee, startDateTime.time, endDateTime.time, differenceInHours(endDateTime, startDateTime))
+            val builder = AlertDialog.Builder(activity!!)
+            builder.setTitle("Time Reported")
+            val sdf = SimpleDateFormat("dd/M/yyyy hh:mm aa")
+            builder.setMessage(sdf.format(startDateTime.time) + " - " +  sdf.format(endDateTime.time))
+            builder.setPositiveButton(android.R.string.ok) { dialog, id ->
+                dialog.dismiss()
+            }
+            builder.show()
+        }
 
         this.setHour(binding.startTime, this.startDateTime)
         this.setDate(binding.startDate, this.startDateTime)
@@ -71,45 +105,47 @@ class TimeLogFragment : Fragment() {
 
     private fun updateWorkingHoursLabel(): Double {
         val hours = this.differenceInHours(this.endDateTime, this.startDateTime)
-        this.binding.hoursTextView.text = "${BigDecimal(hours).setScale(2, RoundingMode.HALF_EVEN)} hours worked"
+        this.binding.hoursTextView.text =
+            "${BigDecimal(hours).setScale(2, RoundingMode.HALF_EVEN)} hours worked"
         return hours
     }
 
-    private fun setDate(textView: TextView, year: Int, month: Int, day: Int) {
-        textView.text = "${month + 1}/$day/$year"
-    }
-
     private fun setDate(textView: TextView, calendar: Calendar) {
-        textView.text = "${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.YEAR)}"
-    }
-
-    private fun setHour(textView: TextView, hour: Int, minutes: Int) {
-        textView.text = "$hour:$minutes"
+        textView.text =
+            "${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(
+                Calendar.YEAR
+            )}"
     }
 
     private fun setHour(textView: TextView, calendar: Calendar) {
-        textView.text = "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}"
+        textView.text = SimpleDateFormat("hh:mm aa").format(calendar.time)
     }
 
     fun showDatePickerDialog(textView: TextView, calendar: Calendar) {
         val datePicker: DatePickerDialog
-        datePicker = DatePickerDialog(context!!,
-            DatePickerDialog.OnDateSetListener { view, year, month, day ->
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, month)
-                calendar.set(Calendar.DAY_OF_MONTH, day)
-                this.setDate(textView, year, month, day)
-                this.updateWorkingHoursLabel()
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+        context?.let {
+            datePicker = DatePickerDialog(
+                it,
+                DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                    calendar.set(Calendar.YEAR, year)
+                    calendar.set(Calendar.MONTH, month)
+                    calendar.set(Calendar.DAY_OF_MONTH, day)
+                    setDate(textView, calendar)
+                    updateWorkingHoursLabel()
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
 
-        if (calendar == startDateTime) {
-            datePicker.datePicker.maxDate = endDateTime.timeInMillis
-        }
-        else {
-            datePicker.datePicker.minDate = startDateTime.timeInMillis
-        }
+            if (calendar == startDateTime) {
+                datePicker.datePicker.maxDate = endDateTime.timeInMillis
+            } else {
+                datePicker.datePicker.minDate = startDateTime.timeInMillis
+            }
 
-        datePicker.show()
+            datePicker.show()
+        }
     }
 
     fun showTimePickerDialog(textView: TextView, calendar: Calendar) {
@@ -118,29 +154,29 @@ class TimeLogFragment : Fragment() {
             TimePickerDialog.OnTimeSetListener { view, hourSelected, minuteSelected ->
                 val auxiliarCalendar = calendar.clone() as Calendar
                 auxiliarCalendar.apply {
-                    this.set(Calendar.HOUR_OF_DAY, hourSelected)
-                    this.set(Calendar.MINUTE, minuteSelected)
+                    set(Calendar.HOUR_OF_DAY, hourSelected)
+                    set(Calendar.MINUTE, minuteSelected)
                 }
-
                 var differenceInHours = 0.0
-                if (calendar == this.startDateTime) {
-                    differenceInHours = this.differenceInHours(this.endDateTime, auxiliarCalendar)
+                if (calendar == startDateTime) {
+                    differenceInHours = differenceInHours(endDateTime, auxiliarCalendar)
+                } else {
+                    differenceInHours = differenceInHours(auxiliarCalendar, startDateTime)
                 }
-                else {
-                    differenceInHours = this.differenceInHours(auxiliarCalendar, this.startDateTime)
-                }
-
                 if (differenceInHours > 0) {
                     calendar.set(Calendar.HOUR_OF_DAY, hourSelected)
                     calendar.set(Calendar.MINUTE, minuteSelected)
-                    this.setHour(textView, hourSelected, minuteSelected)
-                    this.updateWorkingHoursLabel()
+                    setHour(textView, calendar)
+                    updateWorkingHoursLabel()
+                } else {
+                    Toast.makeText(
+                        context,
+                        "End time must be after start time...",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                else {
-                    Toast.makeText(context,"End time must be after start time...",Toast.LENGTH_SHORT).show()
-                }
-
-            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
+            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false
+        )
         timePickerDialog.show()
     }
 
