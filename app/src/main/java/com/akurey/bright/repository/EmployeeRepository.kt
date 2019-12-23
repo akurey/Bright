@@ -19,15 +19,17 @@ class EmployeeRepository: EmployeeDataSource {
         }
     }
 
-    override fun saveEmployee(awsEmployee: EmployeeDO) {
+    override fun saveEmployee(awsEmployee: EmployeeDO): Employee? {
         val realm = Realm.getDefaultInstance()
         val employee = Employee(awsEmployee)
         realm.beginTransaction()
         try {
             realm.copyToRealmOrUpdate(employee)
             realm.commitTransaction()
+            return  employee
         } catch (e: Exception) {
             realm.cancelTransaction()
+            return null
         } finally {
             realm.close()
         }

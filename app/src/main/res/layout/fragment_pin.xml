@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewmodel"
             type="com.akurey.bright.PinViewModel" />
+
         <variable
             name="fragment"
             type="com.akurey.bright.PinFragment" />
@@ -29,14 +34,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.19">​
+            app:layout_constraintTop_toTopOf="parent">​
 
             <EditText
                 android:id="@+id/editTextFirstDigit"
                 style="@style/CustomEditText"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
+                android:cursorVisible="false"
                 android:gravity="center"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
@@ -52,6 +57,7 @@
                 style="@style/CustomEditText"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
+                android:cursorVisible="false"
                 android:gravity="center"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
@@ -68,6 +74,7 @@
                 style="@style/CustomEditText"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
+                android:cursorVisible="false"
                 android:gravity="center"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
@@ -84,6 +91,7 @@
                 style="@style/CustomEditText"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
+                android:cursorVisible="false"
                 android:gravity="center"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
@@ -101,8 +109,8 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="28dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
             android:background="@color/colorAkureyOrange"
             android:enabled="@{viewmodel.isDataReady}"
             android:onClick="@{fragment::onNextClicked}"
@@ -110,19 +118,19 @@
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{viewmodel.isLoading ? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

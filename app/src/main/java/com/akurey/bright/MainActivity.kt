@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.thread
 
-
 class MainActivity : AppCompatActivity() {
 
     private var dynamoDBMapper: DynamoDBMapper? = null
@@ -31,12 +30,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         AWSSetup()
         initRealm()
-        val transaction = supportFragmentManager.beginTransaction()
-        val fragment = PinFragment.newInstance()
-        fragment.parent = this
-        transaction.add(R.id.container, fragment)
-        transaction.addToBackStack(fragment::class.java.name)
-        transaction.commit()
+        EmployeeRepository.getInstance().getEmployee()?.let {
+            goToTimeLog()
+        } ?: run {
+            goToPin()
+        }
     }
 
     private fun initRealm() {
@@ -91,6 +89,22 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
     }
 
+    fun setPinInactive(employee: EmployeeDO) {
+        employee.pinActive = false
+        thread(start = true) {
+            dynamoDBMapper?.save(employee)
+        }
+    }
+
+    fun goToPin(){
+        val transaction = supportFragmentManager.beginTransaction()
+        val fragment = PinFragment.newInstance()
+        fragment.parent = this
+        transaction.add(R.id.container, fragment)
+        transaction.addToBackStack(fragment::class.java.name)
+        transaction.commit()
+    }
+
     fun getEmployee(pin: String, callback: (EmployeeDO?) -> Unit) {
         thread(start = true) {
             val expressionAttributeValues: MutableMap<String, AttributeValue> = HashMap()
@@ -105,8 +119,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-
 
 //    private fun createEmployee() {
 //        val employee = EmployeeDO()

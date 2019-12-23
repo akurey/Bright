@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Bright</string>
     <string name="login">Login</string>
+    <string name="error">Error</string>
+    <string name="login_error">"User not found, make sure pin is correct and you are connected to the internet"</string>
+
 </resources>

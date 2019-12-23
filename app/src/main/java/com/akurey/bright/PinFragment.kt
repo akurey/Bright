@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.akurey.bright.databinding.FragmentPinBinding
+import com.akurey.bright.repository.EmployeeRepository
 import kotlinx.android.synthetic.main.fragment_pin.*
 
 
@@ -48,6 +49,7 @@ class PinFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         editTextFirstDigit.requestFocus()
+        addKeyListeners()
         showSoftKeyboard(editTextFirstDigit, activity)
         viewModel = ViewModelProviders.of(this).get(PinViewModel::class.java)
         binding.viewmodel = viewModel
@@ -65,6 +67,36 @@ class PinFragment : Fragment() {
         }
     }
 
+    private fun addKeyListeners() {
+        editTextSecondDigit.setOnKeyListener { v, keyCode, event ->
+            if ((keyCode == KeyEvent.KEYCODE_DEL) && (event.action != KeyEvent.ACTION_UP)) {
+                if (viewModel.secondDigit.value!!.isEmpty()) {
+                    viewModel.setFirstDigit("")
+                    editTextFirstDigit.requestFocus()
+                }
+            }
+            false
+        }
+        editTextThirdDigit.setOnKeyListener { v, keyCode, event ->
+            if ((keyCode == KeyEvent.KEYCODE_DEL) && (event.action != KeyEvent.ACTION_UP)) {
+                if (viewModel.thirdDigit.value!!.isEmpty()) {
+                    viewModel.setSecondDigit("")
+                    editTextSecondDigit.requestFocus()
+                }
+            }
+            false
+        }
+        editTextFourthDigit.setOnKeyListener { v, keyCode, event ->
+            if ((keyCode == KeyEvent.KEYCODE_DEL) && (event.action != KeyEvent.ACTION_UP)) {
+                if (viewModel.fourthDigit.value!!.isEmpty()) {
+                    viewModel.setThirdDigit("")
+                    editTextThirdDigit.requestFocus()
+                }
+            }
+            false
+        }
+    }
+
     // region Public Methods
     fun onNextClicked(view: View) {
         val pin =
@@ -73,12 +105,13 @@ class PinFragment : Fragment() {
         parent.getEmployee(pin) {
             viewModel.setIsLoading(false)
             it?.let {
-                //EmployeeRepository.getInstance().saveEmployee(it)
+                EmployeeRepository.getInstance().saveEmployee(it)
+                parent.setPinInactive(it)
                 parent.goToTimeLog()
             } ?: run {
                 val builder = AlertDialog.Builder(activity!!)
-                builder.setTitle("Error")
-                builder.setMessage("User not found, make sure pin is correct and you are connected to hte internet")
+                builder.setTitle(R.string.error)
+                builder.setMessage(R.string.login_error)
                 builder.setPositiveButton(android.R.string.ok) { dialog, id ->
                     dialog.dismiss()
                 }
@@ -95,13 +128,6 @@ class PinFragment : Fragment() {
     }
 
     fun onSecondDigitChange(s: CharSequence, start: Int, before: Int, count: Int) {
-//        if (viewModel.secondDigit.value.isNullOrEmpty() && s.isEmpty()) {
-//            viewModel.setFirstDigit("")
-//            //editTextFirstDigit.setText("")
-//            editTextFirstDigit.requestFocus()
-//            return
-//        }
-
         viewModel.setSecondDigit(s.toString())
         if (s.isNotEmpty()) {
             editTextThirdDigit.requestFocus()
@@ -109,12 +135,6 @@ class PinFragment : Fragment() {
     }
 
     fun onThirdDigitChange(s: CharSequence, start: Int, before: Int, count: Int) {
-//        if (viewModel.thirdDigit.value.isNullOrEmpty() && s.isEmpty()) {
-//            viewModel.setSecondDigit("")
-//            editTextSecondDigit.requestFocus()
-//            return
-//        }
-
         viewModel.setThirdDigit(s.toString())
         if (s.isNotEmpty()) {
             editTextFourthDigit.requestFocus()
@@ -122,11 +142,6 @@ class PinFragment : Fragment() {
     }
 
     fun onFourthDigitChange(s: CharSequence, start: Int, before: Int, count: Int) {
-//        if (viewModel.fourthDigit.value.isNullOrEmpty() && s.isEmpty()) {
-//            viewModel.setThirdDigit("")
-//            editTextThirdDigit.requestFocus()
-//            return
-//        }
         viewModel.setFourthDigit(s.toString())
     }
     // endregion
