@@ -1,18 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".TimeLogFragment">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Time Log View"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+        ​
+        <TextView
+            android:id="@+id/nameTextView"
+            style="@style/titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_left_right"
+            android:layout_marginEnd="@dimen/padding_left_right"
+            android:layout_marginBottom="@dimen/vertical_space_small"
+            android:fontFamily="sans-serif-black"
+            android:text="Bruno Sarmiento Carballo"
+            android:textSize="24sp" />
+        ​
+        <TextView
+            android:id="@+id/companyTextView"
+            style="@style/titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_left_right"
+            android:layout_marginEnd="@dimen/padding_left_right"
+            android:paddingStart="@dimen/padding_left_right"
+            android:paddingEnd="@dimen/padding_left_right"
+            android:text="Akurey" />
+        ​
+
+        <TextView
+            android:id="@+id/startDateLabel"
+            style="@style/dateLabelStyle"
+            android:layout_marginTop="@dimen/vertical_space_large"
+            android:layout_marginBottom="@dimen/vertical_space_small"
+            android:text="@string/startDate"
+            android:textAlignment="inherit" />
+        ​
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            ​
+
+            <TextView
+                android:id="@+id/startDate"
+                style="@style/editableDateStyle" />
+            ​
+
+            <TextView
+                android:id="@+id/startTime"
+                style="@style/editableDateStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_left_right"
+                android:layout_marginEnd="@dimen/padding_left_right"
+                android:layout_weight="1"
+                android:background="#E6E6E6"
+                android:padding="@dimen/extra_small_padding"
+                android:textAlignment="inherit"
+                android:textSize="20sp" />
+        </LinearLayout>​
+
+        <TextView
+            android:id="@+id/endDateLabel"
+            style="@style/dateLabelStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vertical_space_large"
+            android:layout_marginBottom="@dimen/vertical_space_small"
+            android:text="End date"
+            android:textAlignment="inherit" />
+        ​
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/endDate"
+                style="@style/editableDateStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />​
+
+            <TextView
+                android:id="@+id/endTime"
+                style="@style/editableDateStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/hoursTextView"
+            style="@style/titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_left_right"
+            android:layout_marginTop="@dimen/vertical_space_large"
+            android:layout_marginEnd="@dimen/padding_left_right"
+            android:duplicateParentState="true"
+            android:fontFamily="sans-serif-medium"
+            android:text="TextView"
+            android:textColor="@android:color/black" />
+        ​
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_left_right"
+            android:layout_marginTop="@dimen/vertical_space_small"
+            android:layout_marginEnd="@dimen/padding_left_right"
+            android:text="@string/send" />
+        ​
+    </LinearLayout>
+</layout>
