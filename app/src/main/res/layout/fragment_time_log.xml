@@ -115,7 +115,11 @@
         <Button
             android:id="@+id/sendButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
+            android:background="@color/colorAkureyOrange"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
             android:layout_marginStart="@dimen/padding_left_right"
             android:layout_marginTop="@dimen/vertical_space_small"
             android:layout_marginEnd="@dimen/padding_left_right"

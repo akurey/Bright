@@ -105,9 +105,11 @@ class PinFragment : Fragment() {
         parent.getEmployee(pin) {
             viewModel.setIsLoading(false)
             it?.let {
-                EmployeeRepository.getInstance().saveEmployee(it)
                 parent.setPinInactive(it)
-                parent.goToTimeLog()
+                EmployeeRepository.getInstance().saveEmployee(it)?.let { employee ->
+                    parent.goToTimeLog(employee)
+                }
+
             } ?: run {
                 val builder = AlertDialog.Builder(activity!!)
                 builder.setTitle(R.string.error)

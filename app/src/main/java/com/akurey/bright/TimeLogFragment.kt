@@ -12,6 +12,8 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.widget.TextView
 import android.widget.Toast
+import com.akurey.bright.AWSModel.EmployeeDO
+import com.akurey.bright.data.Employee
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -19,9 +21,9 @@ import java.util.*
 class TimeLogFragment : Fragment() {
 
     private lateinit var binding: FragmentTimeLogBinding
-    private var mostCommonWorkingHours = 8
     private var startDateTime = Calendar.getInstance()
     private var endDateTime = Calendar.getInstance()
+    lateinit var employee: Employee
 
     // region New Instance Method
     companion object {
@@ -39,7 +41,11 @@ class TimeLogFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_time_log, container, false)
 
-        this.endDateTime.add(Calendar.HOUR_OF_DAY, this.mostCommonWorkingHours)
+        startDateTime.set(Calendar.HOUR_OF_DAY, 9)
+        startDateTime.set(Calendar.MINUTE, 0)
+
+        endDateTime.set(Calendar.HOUR_OF_DAY, 17)
+        endDateTime.set(Calendar.MINUTE, 0)
 
         binding.startDate.setOnClickListener { this.showDatePickerDialog(it as TextView, startDateTime) }
         binding.startTime.setOnClickListener { this.showTimePickerDialog(it as TextView, startDateTime) }
@@ -52,7 +58,8 @@ class TimeLogFragment : Fragment() {
 
         this.setHour(binding.endTime, this.endDateTime)
         this.setDate(binding.endDate, this.endDateTime)
-
+        binding.companyTextView.setText(employee.facilityName)
+        binding.nameTextView.setText(employee.firstName + " " + employee.lastName)
         this.updateWorkingHoursLabel()
 
         return binding.root

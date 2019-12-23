@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.akurey.bright.AWSModel.EmployeeDO
 import com.akurey.bright.AWSModel.TimeLogDO
+import com.akurey.bright.data.Employee
 import com.akurey.bright.repository.EmployeeRepository
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         AWSSetup()
         initRealm()
         EmployeeRepository.getInstance().getEmployee()?.let {
-            goToTimeLog()
+            goToTimeLog(it)
         } ?: run {
             goToPin()
         }
@@ -82,9 +83,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun goToTimeLog(){
+    fun goToTimeLog(employee: Employee){
         val transaction = supportFragmentManager.beginTransaction()
         val fragment = TimeLogFragment.newInstance()
+        fragment.employee = employee
         transaction.replace(R.id.container, fragment)
         transaction.commit()
     }
