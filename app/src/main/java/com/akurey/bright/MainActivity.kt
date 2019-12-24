@@ -2,7 +2,10 @@ package com.akurey.bright
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.akurey.bright.AWSModel.EmployeeDO
 import com.akurey.bright.AWSModel.TimeLogDO
@@ -81,7 +84,36 @@ class MainActivity : AppCompatActivity() {
         logItem.employeeId = employee.employeeId
         logItem.hours = hours
         thread(start = true) {
-            dynamoDBMapper?.save(logItem)
+            val spinner = this.findViewById<ProgressBar>(R.id.progressBar)
+            runOnUiThread { spinner.visibility = View.VISIBLE }
+
+            try {
+                dynamoDBMapper?.save(logItem)
+                runOnUiThread {
+                    spinner.visibility = View.INVISIBLE
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Time Reported")
+                    val sdf = SimpleDateFormat("dd/M/yyyy hh:mm aa")
+                    builder.setMessage(sdf.format(startDate) + " - " + sdf.format(endDate))
+                    builder.setPositiveButton(android.R.string.ok) { dialog, id ->
+                        dialog.dismiss()
+                    }
+                    builder.show()
+                }
+
+            } catch (t: Throwable) {
+                runOnUiThread {
+                    spinner.visibility = View.INVISIBLE
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle(R.string.error)
+                    builder.setMessage("something went wrong")
+                    builder.setPositiveButton(android.R.string.ok) { dialog, id ->
+                        dialog.dismiss()
+                    }
+                    builder.show()
+                }
+
+            }
         }
     }
 //
@@ -123,8 +155,7 @@ class MainActivity : AppCompatActivity() {
     fun setPinInactive(employee: EmployeeDO) {
         employee.pinActive = false
         thread(start = true) {
-            val result = dynamoDBMapper?.save(employee)
-            println(result.toString())
+            dynamoDBMapper?.save(employee)
         }
     }
 

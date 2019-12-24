@@ -125,5 +125,6 @@
             android:layout_marginEnd="@dimen/padding_left_right"
             android:text="@string/send" />
         ​
+
     </LinearLayout>
 </layout>

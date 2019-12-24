@@ -77,14 +77,6 @@ class TimeLogFragment : Fragment() {
 
         binding.sendButton.setOnClickListener {
             parent.createLog(employee, startDateTime.time, endDateTime.time, differenceInHours(endDateTime, startDateTime))
-            val builder = AlertDialog.Builder(activity!!)
-            builder.setTitle("Time Reported")
-            val sdf = SimpleDateFormat("dd/M/yyyy hh:mm aa")
-            builder.setMessage(sdf.format(startDateTime.time) + " - " +  sdf.format(endDateTime.time))
-            builder.setPositiveButton(android.R.string.ok) { dialog, id ->
-                dialog.dismiss()
-            }
-            builder.show()
         }
 
         this.setHour(binding.startTime, this.startDateTime)
