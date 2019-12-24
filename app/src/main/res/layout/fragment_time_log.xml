@@ -40,7 +40,7 @@
             style="@style/dateLabelStyle"
             android:layout_marginTop="@dimen/vertical_space_large"
             android:layout_marginBottom="@dimen/vertical_space_small"
-            android:text="@string/startDate"
+            android:text="@string/start_date"
             android:textAlignment="inherit" />
         ​
 

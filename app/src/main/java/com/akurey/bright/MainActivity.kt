@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                     spinner.visibility = View.INVISIBLE
                     val builder = AlertDialog.Builder(this)
                     builder.setTitle(R.string.error)
-                    builder.setMessage("something went wrong")
+                    builder.setMessage(R.string.generic_error)
                     builder.setPositiveButton(android.R.string.ok) { dialog, id ->
                         dialog.dismiss()
                     }
